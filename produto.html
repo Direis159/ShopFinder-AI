@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Produto — ShopFinder AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <a href="index.html" class="logo"><span class="logo-dot"></span>ShopFinder AI</a>
+      <div class="nav-search">
+        <input type="text" id="busca-header" placeholder="Buscar produto..." onkeydown="if(event.key==='Enter') irParaBusca(this)">
+      </div>
+      <div class="nav-links">
+        <a href="categoria.html?cat=cozinha">Cozinha</a>
+        <a href="categoria.html?cat=eletronicos">Eletrônicos</a>
+        <a href="categoria.html?cat=casa">Casa</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap" id="produto-container"></div>
+
+<section class="section section-alt" id="secao-comparador">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Compare entre lojas</h2>
+      <p>Mesmo produto, preços diferentes — já ordenado pela melhor combinação de preço e confiabilidade.</p>
+    </div>
+    <div class="compare-table" id="comparador-tabela"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Histórico de preço</h2>
+      <p>Últimos 30 dias</p>
+    </div>
+    <div class="chart" id="chart-historico"></div>
+    <p class="chart-caption" id="chart-caption"></p>
+    <p class="disclosure" id="disclosure-produto"></p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-row">
+    <div class="logo"><span class="logo-dot"></span>ShopFinder AI</div>
+    <p>Plataforma de curadoria de ofertas — não vende nem armazena produtos diretamente.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script>renderProduto();</script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+[
+  {
+    "loja": "Amazon",
+    "status": "pronto_para_enviar",
+    "dadosFormulario": {
+      "nomeDoSite": "ShopFinder AI",
+      "categoriaDoSite": "Comparador de preços / curadoria de ofertas",
+      "descricaoCurta": "Plataforma que compara preço, avaliação e histórico entre lojas parceiras, sem estoque próprio.",
+      "modeloDeMonetizacao": "Comissão por venda via link de afiliado",
+      "urlDoSite": "https://SEU-DOMINIO-AQUI.com.br",
+      "estimativaTrafegoMensal": "Site novo — ainda sem tráfego mensurado (a maioria dos programas aceita sites em fase inicial)"
+    },
+    "linkDeInscricao": "https://associados.amazon.com.br/",
+    "preenchidoEm": "2026-09-12T01:22:16.529Z"
+  },
+  {
+    "loja": "MercadoLivre",
+    "status": "pronto_para_enviar",
+    "dadosFormulario": {
+      "nomeDoSite": "ShopFinder AI",
+      "categoriaDoSite": "Comparador de preços / curadoria de ofertas",
+      "descricaoCurta": "Plataforma que compara preço, avaliação e histórico entre lojas parceiras, sem estoque próprio.",
+      "modeloDeMonetizacao": "Comissão por venda via link de afiliado",
+      "urlDoSite": "https://SEU-DOMINIO-AQUI.com.br",
+      "estimativaTrafegoMensal": "Site novo — ainda sem tráfego mensurado (a maioria dos programas aceita sites em fase inicial)"
+    },
+    "linkDeInscricao": "https://www.mercadolivre.com.br/afiliados",
+    "preenchidoEm": "2026-09-12T01:22:16.537Z"
+  },
+  {
+    "loja": "Magalu",
+    "status": "pronto_para_enviar",
+    "dadosFormulario": {
+      "nomeDoSite": "ShopFinder AI",
+      "categoriaDoSite": "Comparador de preços / curadoria de ofertas",
+      "descricaoCurta": "Plataforma que compara preço, avaliação e histórico entre lojas parceiras, sem estoque próprio.",
+      "modeloDeMonetizacao": "Comissão por venda via link de afiliado",
+      "urlDoSite": "https://SEU-DOMINIO-AQUI.com.br",
+      "estimativaTrafegoMensal": "Site novo — ainda sem tráfego mensurado (a maioria dos programas aceita sites em fase inicial)"
+    },
+    "linkDeInscricao": "https://www.magazinevoce.com.br/",
+    "preenchidoEm": "2026-09-12T01:22:16.537Z"
+  },
+  {
+    "loja": "Shopee",
+    "status": "pronto_para_enviar",
+    "dadosFormulario": {
+      "nomeDoSite": "ShopFinder AI",
+      "categoriaDoSite": "Comparador de preços / curadoria de ofertas",
+      "descricaoCurta": "Plataforma que compara preço, avaliação e histórico entre lojas parceiras, sem estoque próprio.",
+      "modeloDeMonetizacao": "Comissão por venda via link de afiliado",
+      "urlDoSite": "https://SEU-DOMINIO-AQUI.com.br",
+      "estimativaTrafegoMensal": "Site novo — ainda sem tráfego mensurado (a maioria dos programas aceita sites em fase inicial)"
+    },
+    "linkDeInscricao": "https://affiliate.shopee.com.br/",
+    "preenchidoEm": "2026-09-12T01:22:16.537Z"
+  },
+  {
+    "loja": "AliExpress",
+    "status": "pronto_para_enviar",
+    "dadosFormulario": {
+      "nomeDoSite": "ShopFinder AI",
+      "categoriaDoSite": "Comparador de preços / curadoria de ofertas",
+      "descricaoCurta": "Plataforma que compara preço, avaliação e histórico entre lojas parceiras, sem estoque próprio.",
+      "modeloDeMonetizacao": "Comissão por venda via link de afiliado",
+      "urlDoSite": "https://SEU-DOMINIO-AQUI.com.br",
+      "estimativaTrafegoMensal": "Site novo — ainda sem tráfego mensurado (a maioria dos programas aceita sites em fase inicial)"
+    },
+    "linkDeInscricao": "https://portals.aliexpress.com/",
+    "preenchidoEm": "2026-09-12T01:22:16.537Z"
+  },
+  {
+    "loja": "TikTokShop",
+    "status": "pronto_para_enviar",
+    "dadosFormulario": {
+      "nomeDoSite": "ShopFinder AI",
+      "categoriaDoSite": "Comparador de preços / curadoria de ofertas",
+      "descricaoCurta": "Plataforma que compara preço, avaliação e histórico entre lojas parceiras, sem estoque próprio.",
+      "modeloDeMonetizacao": "Comissão por venda via link de afiliado",
+      "urlDoSite": "https://SEU-DOMINIO-AQUI.com.br",
+      "estimativaTrafegoMensal": "Site novo — ainda sem tráfego mensurado (a maioria dos programas aceita sites em fase inicial)"
+    },
+    "linkDeInscricao": "https://affiliate.tiktok.com/",
+    "preenchidoEm": "2026-09-12T01:22:16.537Z"
+  },
+  {
+    "loja": "Shein",
+    "status": "adiado_para_segundo_nicho",
+    "dadosFormulario": {
+      "nomeDoSite": "ShopFinder AI",
+      "categoriaDoSite": "Comparador de preços / curadoria de ofertas",
+      "descricaoCurta": "Plataforma que compara preço, avaliação e histórico entre lojas parceiras, sem estoque próprio.",
+      "modeloDeMonetizacao": "Comissão por venda via link de afiliado",
+      "urlDoSite": "https://SEU-DOMINIO-AQUI.com.br",
+      "estimativaTrafegoMensal": "Site novo — ainda sem tráfego mensurado (a maioria dos programas aceita sites em fase inicial)"
+    },
+    "linkDeInscricao": "https://www.shein.com/affiliate",
+    "preenchidoEm": "2026-09-12T01:22:16.537Z"
+  }
+]

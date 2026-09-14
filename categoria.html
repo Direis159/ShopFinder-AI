@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Catálogo — ShopFinder AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <a href="index.html" class="logo"><span class="logo-dot"></span>ShopFinder AI</a>
+      <div class="nav-search">
+        <input type="text" id="busca-header" placeholder="Buscar produto..." onkeydown="if(event.key==='Enter') irParaBusca(this)">
+      </div>
+      <div class="nav-links">
+        <a href="categoria.html?cat=cozinha">Cozinha</a>
+        <a href="categoria.html?cat=eletronicos">Eletrônicos</a>
+        <a href="categoria.html?cat=casa">Casa</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <p class="breadcrumb"><a href="index.html">Início</a></p>
+
+  <div class="page-head">
+    <div><h1 id="categoria-titulo">Catálogo</h1></div>
+    <span class="result-count" id="result-count"></span>
+  </div>
+
+  <div class="layout">
+    <aside class="filters">
+      <div class="filter-group">
+        <h3>Avaliação mínima</h3>
+        <label class="filter-option"><input type="radio" name="nota" value="4.5"> 4.5 ou mais</label>
+        <label class="filter-option"><input type="radio" name="nota" value="4.0"> 4.0 ou mais</label>
+        <label class="filter-option"><input type="radio" name="nota" value="0" checked> Qualquer nota</label>
+      </div>
+      <div class="filter-group">
+        <h3>Loja de origem</h3>
+        <div id="filtro-lojas"></div>
+      </div>
+      <button class="clear-filters" onclick="limparFiltros()">Limpar filtros</button>
+    </aside>
+
+    <main>
+      <div class="filter-row">
+        <span class="chip active" data-sort="ia">Relevância (IA)</span>
+        <span class="chip" data-sort="preco-menor">Menor preço</span>
+        <span class="chip" data-sort="vendidos">Mais avaliados</span>
+        <span class="chip" data-sort="avaliados">Melhor nota</span>
+      </div>
+      <div class="product-grid grid-3" id="grid-produtos"></div>
+    </main>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap footer-row">
+    <div class="logo"><span class="logo-dot"></span>ShopFinder AI</div>
+    <p>Plataforma de curadoria de ofertas — não vende nem armazena produtos diretamente.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script>renderCategoria();</script>
+</body>
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cozinha — ShopFinder AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0F1320; --surface:#171C2E; --surface-2:#212844; --line:#2C3352;
+    --text:#EDEFF7; --text-muted:#98A1C2; --text-faint:#6B7394;
+    --gold:#F0A93A; --gold-dim:#7A5A20; --green:#4ADE80; --green-dim:#1F4A34;
+    --radius-s:6px; --radius-m:14px;
+    --font-head:'Space Grotesk', sans-serif; --font-body:'Inter', sans-serif; --font-mono:'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--bg); color:var(--text); font-family:var(--font-body); line-height:1.5; -webkit-font-smoothing:antialiased;}
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 28px;}
+
+  header{position:sticky; top:0; z-index:40; background:rgba(15,19,32,0.88); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
+  nav{display:flex; align-items:center; justify-content:space-between; padding:18px 0;}
+  .logo{font-family:var(--font-head); font-weight:700; font-size:20px; letter-spacing:-0.02em; display:flex; align-items:center; gap:8px;}
+  .logo-dot{width:9px; height:9px; border-radius:50%; background:var(--gold); box-shadow:0 0 0 4px rgba(240,169,58,0.18);}
+  .nav-cta{background:var(--gold); color:#1a1400; font-weight:600; font-size:14px; padding:10px 18px; border-radius:var(--radius-s);}
+
+  .breadcrumb{padding:20px 0 0; font-size:13px; color:var(--text-faint);}
+  .breadcrumb a:hover{color:var(--text-muted);}
+
+  .page-head{padding:14px 0 26px; display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:16px;}
+  .page-head h1{font-family:var(--font-head); font-size:30px; font-weight:600;}
+  .page-head p{margin-top:6px; font-size:14px; color:var(--text-muted);}
+  .result-count{font-size:13px; color:var(--text-faint); font-family:var(--font-mono);}
+
+  .layout{display:grid; grid-template-columns:240px 1fr; gap:36px; padding-bottom:70px;}
+  @media(max-width:860px){ .layout{grid-template-columns:1fr;} }
+
+  .filters{position:sticky; top:88px; align-self:start;}
+  .filter-group{margin-bottom:26px;}
+  .filter-group h3{font-size:13px; font-weight:600; margin-bottom:12px; color:var(--text-muted);}
+  .filter-option{display:flex; align-items:center; gap:9px; font-size:14px; color:var(--text-muted); padding:6px 0; cursor:pointer;}
+  .filter-option input{accent-color:var(--gold);}
+  .filter-option:hover{color:var(--text);}
+  .price-range{display:flex; gap:8px; align-items:center;}
+  .price-range input{width:100%; background:var(--surface); border:1px solid var(--line); color:var(--text); padding:8px 10px; border-radius:var(--radius-s); font-size:13px; font-family:var(--font-mono);}
+  .store-chip-row{display:flex; flex-wrap:wrap; gap:8px;}
+  .store-chip{font-size:12.5px; padding:6px 12px; border:1px solid var(--line); border-radius:100px; color:var(--text-muted); cursor:pointer;}
+  .store-chip.active{border-color:var(--gold); color:var(--gold);}
+  .clear-filters{font-size:13px; color:var(--text-faint); text-decoration:underline; cursor:pointer;}
+
+  .sort-row{display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; flex-wrap:wrap; gap:12px;}
+  .sort-chips{display:flex; gap:8px; flex-wrap:wrap;}
+  .chip{font-size:13.5px; padding:8px 14px; border-radius:100px; border:1px solid var(--line); color:var(--text-muted); cursor:pointer;}
+  .chip.active{background:var(--gold); border-color:var(--gold); color:#1a1400; font-weight:600;}
+
+  .product-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+  @media(max-width:1040px){ .product-grid{grid-template-columns:repeat(2,1fr);} }
+  @media(max-width:560px){ .product-grid{grid-template-columns:1fr;} }
+
+  .card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-m); padding:16px; transition:border-color 0.15s ease, transform 0.15s ease;}
+  .card:hover{border-color:var(--gold-dim); transform:translateY(-3px);}
+  .card .thumb{aspect-ratio:1/1; background:var(--surface-2); border-radius:var(--radius-s); display:flex; align-items:center; justify-content:center; font-size:12px; color:var(--text-faint); margin-bottom:14px;}
+  .card .tag{display:inline-block; font-size:11px; padding:3px 9px; border-radius:100px; margin-bottom:10px;}
+  .tag.trend{background:var(--gold-dim); color:var(--gold);}
+  .tag.drop{background:var(--green-dim); color:var(--green);}
+  .card .store{font-size:12px; color:var(--text-faint);}
+  .card h4{font-size:14.5px; font-weight:500; margin-top:5px; line-height:1.4; min-height:40px;}
+  .card .price-row{display:flex; align-items:baseline; gap:8px; margin-top:12px;}
+  .card .price{font-family:var(--font-mono); font-weight:600; font-size:18px;}
+  .card .was{font-family:var(--font-mono); font-size:12.5px; color:var(--text-faint); text-decoration:line-through;}
+  .card .rating{font-size:12.5px; color:var(--text-faint); margin-top:6px;}
+  .card .cta{display:block; text-align:center; margin-top:14px; background:var(--surface-2); border:1px solid var(--line); padding:10px; border-radius:var(--radius-s); font-size:13.5px; font-weight:500; cursor:pointer; transition:background 0.15s ease, border-color 0.15s ease;}
+  .card .cta:hover{background:var(--gold); border-color:var(--gold); color:#1a1400;}
+
+  .pagination{display:flex; justify-content:center; gap:8px; margin-top:40px;}
+  .page-btn{width:36px; height:36px; display:flex; align-items:center; justify-content:center; border:1px solid var(--line); border-radius:var(--radius-s); font-size:13.5px; color:var(--text-muted); cursor:pointer; font-family:var(--font-mono);}
+  .page-btn.active{background:var(--gold); border-color:var(--gold); color:#1a1400; font-weight:600;}
+
+  footer{border-top:1px solid var(--line); padding:36px 0; margin-top:20px; font-size:12.5px; color:var(--text-faint);}
+  :focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <div class="logo"><span class="logo-dot"></span>ShopFinder AI</div>
+      <a href="#" class="nav-cta">Ver ofertas</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <p class="breadcrumb"><a href="#">Início</a> / Cozinha</p>
+
+  <div class="page-head">
+    <div>
+      <h1>Cozinha</h1>
+      <p>Air fryers, liquidificadores, cafeteiras e mais — ranqueados pela IA</p>
+    </div>
+    <span class="result-count">248 produtos</span>
+  </div>
+
+  <div class="layout">
+    <aside class="filters">
+      <div class="filter-group">
+        <h3>Faixa de preço</h3>
+        <div class="price-range">
+          <input type="text" placeholder="Mín">
+          <span style="color:var(--text-faint)">—</span>
+          <input type="text" placeholder="Máx">
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <h3>Avaliação mínima</h3>
+        <label class="filter-option"><input type="radio" name="rating">4.5 ou mais</label>
+        <label class="filter-option"><input type="radio" name="rating">4.0 ou mais</label>
+        <label class="filter-option"><input type="radio" name="rating">Qualquer nota</label>
+      </div>
+
+      <div class="filter-group">
+        <h3>Loja de origem</h3>
+        <div class="store-chip-row">
+          <span class="store-chip active">Amazon</span>
+          <span class="store-chip active">Magalu</span>
+          <span class="store-chip">Mercado Livre</span>
+          <span class="store-chip">Shopee</span>
+          <span class="store-chip">AliExpress</span>
+        </div>
+      </div>
+
+      <div class="filter-group">
+        <label class="filter-option"><input type="checkbox" checked> Frete grátis</label>
+        <label class="filter-option"><input type="checkbox"> Em queda de preço</label>
+        <label class="filter-option"><input type="checkbox"> Escolha da IA</label>
+      </div>
+
+      <span class="clear-filters">Limpar filtros</span>
+    </aside>
+
+    <main>
+      <div class="sort-row">
+        <div class="sort-chips">
+          <span class="chip active">Relevância (IA)</span>
+          <span class="chip">Menor preço</span>
+          <span class="chip">Mais vendidos</span>
+          <span class="chip">Melhor avaliados</span>
+        </div>
+      </div>
+
+      <div class="product-grid">
+        <div class="card"><div class="thumb">imagem</div><span class="tag drop">Queda de preço</span><p class="store">Magalu</p><h4>Air fryer digital 5L, painel touch</h4><div class="price-row"><span class="price">R$ 312</span><span class="was">R$ 389</span></div><p class="rating">4.8 · 8.940 avaliações</p><div class="cta">Ver oferta</div></div>
+
+        <div class="card"><div class="thumb">imagem</div><span class="tag trend">Escolha da IA</span><p class="store">Amazon</p><h4>Cafeteira elétrica programável 30 xícaras</h4><div class="price-row"><span class="price">R$ 198</span></div><p class="rating">4.6 · 4.120 avaliações</p><div class="cta">Ver oferta</div></div>
+
+        <div class="card"><div class="thumb">imagem</div><span class="tag trend">Em alta</span><p class="store">Mercado Livre</p><h4>Liquidificador 1200W, 12 velocidades</h4><div class="price-row"><span class="price">R$ 249</span></div><p class="rating">4.5 · 2.310 avaliações</p><div class="cta">Ver oferta</div></div>
+
+        <div class="card"><div class="thumb">imagem</div><span class="tag drop">Menor preço em 60 dias</span><p class="store">Shopee</p><h4>Air fryer forno 12L, 2 grades</h4><div class="price-row"><span class="price">R$ 458</span><span class="was">R$ 520</span></div><p class="rating">4.7 · 1.890 avaliações</p><div class="cta">Ver oferta</div></div>
+
+        <div class="card"><div class="thumb">imagem</div><p class="store">Magalu</p><h4>Jogo de panelas antiaderentes, 5 peças</h4><div class="price-row"><span class="price">R$ 279</span></div><p class="rating">4.4 · 960 avaliações</p><div class="cta">Ver oferta</div></div>
+
+        <div class="card"><div class="thumb">imagem</div><span class="tag trend">Escolha da IA</span><p class="store">Amazon</p><h4>Balança de cozinha digital de precisão</h4><div class="price-row"><span class="price">R$ 42</span></div><p class="rating">4.8 · 5.640 avaliações</p><div class="cta">Ver oferta</div></div>
+
+        <div class="card"><div class="thumb">imagem</div><p class="store">AliExpress</p><h4>Kit forminhas de silicone p/ air fryer</h4><div class="price-row"><span class="price">R$ 34</span></div><p class="rating">4.3 · 720 avaliações</p><div class="cta">Ver oferta</div></div>
+
+        <div class="card"><div class="thumb">imagem</div><span class="tag drop">Queda de preço</span><p class="store">Mercado Livre</p><h4>Sanduicheira grill antiaderente</h4><div class="price-row"><span class="price">R$ 89</span><span class="was">R$ 119</span></div><p class="rating">4.5 · 1.430 avaliações</p><div class="cta">Ver oferta</div></div>
+
+        <div class="card"><div class="thumb">imagem</div><p class="store">Magalu</p><h4>Fritadeira dupla cesta 9L</h4><div class="price-row"><span class="price">R$ 612</span></div><p class="rating">4.6 · 890 avaliações</p><div class="cta">Ver oferta</div></div>
+      </div>
+
+      <div class="pagination">
+        <div class="page-btn active">1</div>
+        <div class="page-btn">2</div>
+        <div class="page-btn">3</div>
+        <div class="page-btn">···</div>
+        <div class="page-btn">18</div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <p>ShopFinder AI. Plataforma de curadoria de ofertas — não vende nem armazena produtos diretamente.</p>
+  </div>
+</footer>
+
+</body>
+</html>

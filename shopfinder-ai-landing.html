@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShopFinder AI — Radar de ofertas com curadoria por IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0F1320;
+    --surface:#171C2E;
+    --surface-2:#212844;
+    --line:#2C3352;
+    --text:#EDEFF7;
+    --text-muted:#98A1C2;
+    --text-faint:#6B7394;
+    --gold:#F0A93A;
+    --gold-dim:#7A5A20;
+    --green:#4ADE80;
+    --green-dim:#1F4A34;
+    --radius-s:6px;
+    --radius-m:14px;
+    --font-head:'Space Grotesk', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font-body);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 28px;}
+  ::selection{background:var(--gold); color:#1a1400;}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:sticky; top:0; z-index:40;
+    background:rgba(15,19,32,0.88);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--line);
+  }
+  nav{display:flex; align-items:center; justify-content:space-between; padding:18px 0;}
+  .logo{
+    font-family:var(--font-head); font-weight:700; font-size:20px; letter-spacing:-0.02em;
+    display:flex; align-items:center; gap:8px;
+  }
+  .logo-dot{width:9px; height:9px; border-radius:50%; background:var(--gold); box-shadow:0 0 0 4px rgba(240,169,58,0.18);}
+  .nav-links{display:flex; gap:32px; font-size:14.5px; color:var(--text-muted);}
+  .nav-links a:hover{color:var(--text);}
+  .nav-cta{
+    background:var(--gold); color:#1a1400; font-weight:600; font-size:14px;
+    padding:10px 18px; border-radius:var(--radius-s);
+  }
+  @media(max-width:760px){ .nav-links{display:none;} }
+
+  /* ---------- HERO ---------- */
+  .hero{padding:88px 0 100px; position:relative; overflow:hidden;}
+  .hero-grid{display:grid; grid-template-columns:1.05fr 0.95fr; gap:56px; align-items:center;}
+  @media(max-width:900px){ .hero-grid{grid-template-columns:1fr; gap:64px;} }
+
+  .eyebrow{
+    color:var(--gold); font-size:14px; font-weight:500; margin-bottom:18px;
+  }
+  h1{
+    font-family:var(--font-head); font-weight:600; font-size:52px; line-height:1.08;
+    letter-spacing:-0.02em; max-width:560px;
+  }
+  @media(max-width:520px){ h1{font-size:36px;} }
+  .hero p.lede{
+    margin-top:22px; font-size:17px; color:var(--text-muted); max-width:480px; line-height:1.65;
+  }
+
+  .search-mock{
+    margin-top:36px; display:flex; gap:10px; max-width:480px;
+  }
+  .search-mock input{
+    flex:1; background:var(--surface); border:1px solid var(--line); color:var(--text);
+    padding:14px 16px; border-radius:var(--radius-s); font-size:15px; font-family:var(--font-body);
+  }
+  .search-mock input::placeholder{color:var(--text-faint);}
+  .search-mock button{
+    background:var(--gold); color:#1a1400; font-weight:600; border:none;
+    padding:14px 22px; border-radius:var(--radius-s); font-size:15px; cursor:pointer;
+    transition:background 0.15s ease;
+  }
+  .search-mock button:hover{background:#f5b855;}
+
+  .hero-stats{display:flex; gap:36px; margin-top:34px;}
+  .hero-stats div p:first-child{
+    font-family:var(--font-mono); font-size:22px; font-weight:600; color:var(--text);
+  }
+  .hero-stats div p:last-child{font-size:13px; color:var(--text-faint); margin-top:2px;}
+
+  /* ---------- RADAR VISUAL ---------- */
+  .radar-box{
+    position:relative; aspect-ratio:1/1; max-width:440px; margin:0 auto;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .radar-ring{
+    position:absolute; border:1px solid var(--line); border-radius:50%;
+  }
+  .radar-ring.r1{width:100%; height:100%;}
+  .radar-ring.r2{width:72%; height:72%;}
+  .radar-ring.r3{width:44%; height:44%;}
+  .radar-sweep{
+    position:absolute; width:100%; height:100%; border-radius:50%;
+    background:conic-gradient(from 0deg, rgba(240,169,58,0.0) 0deg, rgba(240,169,58,0.28) 28deg, rgba(240,169,58,0) 70deg);
+    animation:spin 5s linear infinite;
+  }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce){ .radar-sweep{animation:none;} }
+
+  .radar-core{
+    position:relative; z-index:2; background:var(--surface); border:1px solid var(--line);
+    border-radius:var(--radius-m); padding:18px 20px; text-align:left; width:230px;
+    box-shadow:0 20px 60px rgba(0,0,0,0.35);
+  }
+  .radar-core .store{font-size:12px; color:var(--text-faint);}
+  .radar-core .name{font-size:14.5px; margin-top:4px; font-weight:500;}
+  .radar-core .price-row{display:flex; align-items:baseline; gap:8px; margin-top:10px;}
+  .radar-core .price{font-family:var(--font-mono); font-size:20px; font-weight:600; color:var(--green);}
+  .radar-core .was{font-family:var(--font-mono); font-size:13px; color:var(--text-faint); text-decoration:line-through;}
+  .radar-core .badge{
+    display:inline-block; margin-top:10px; font-size:11.5px; color:var(--green);
+    background:var(--green-dim); padding:4px 9px; border-radius:100px;
+  }
+
+  .radar-node{
+    position:absolute; width:9px; height:9px; border-radius:50%; background:var(--text-faint);
+  }
+  .radar-node.n1{top:14%; left:20%;}
+  .radar-node.n2{top:70%; left:16%;}
+  .radar-node.n3{top:22%; left:82%;}
+  .radar-node.n4{top:78%; left:78%;}
+
+  /* ---------- SECTION HEADERS ---------- */
+  .section{padding:80px 0;}
+  .section-head{max-width:560px; margin-bottom:44px;}
+  .section-head h2{
+    font-family:var(--font-head); font-size:32px; font-weight:600; letter-spacing:-0.01em;
+  }
+  .section-head p{margin-top:12px; color:var(--text-muted); font-size:15.5px; line-height:1.6;}
+  .section-alt{background:var(--surface);}
+
+  /* ---------- HOW IT WORKS ---------- */
+  .steps{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--line); border:1px solid var(--line); border-radius:var(--radius-m); overflow:hidden;}
+  @media(max-width:760px){ .steps{grid-template-columns:1fr;} }
+  .step{background:var(--bg); padding:32px 28px;}
+  .step .num{font-family:var(--font-mono); color:var(--gold); font-size:14px;}
+  .step h3{font-family:var(--font-head); font-size:19px; margin-top:14px; font-weight:600;}
+  .step p{margin-top:10px; font-size:14.5px; color:var(--text-muted); line-height:1.6;}
+
+  /* ---------- PRODUCT GRID ---------- */
+  .filter-row{display:flex; gap:10px; margin-bottom:28px; flex-wrap:wrap;}
+  .chip{
+    font-size:13.5px; padding:8px 14px; border-radius:100px; border:1px solid var(--line);
+    color:var(--text-muted); cursor:pointer;
+  }
+  .chip.active{background:var(--gold); border-color:var(--gold); color:#1a1400; font-weight:600;}
+
+  .product-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px;}
+  @media(max-width:980px){ .product-grid{grid-template-columns:repeat(2,1fr);} }
+  @media(max-width:520px){ .product-grid{grid-template-columns:1fr;} }
+
+  .card{
+    background:var(--bg); border:1px solid var(--line); border-radius:var(--radius-m);
+    padding:16px; transition:border-color 0.15s ease, transform 0.15s ease;
+  }
+  .card:hover{border-color:var(--gold-dim); transform:translateY(-3px);}
+  .card .thumb{
+    aspect-ratio:1/1; background:var(--surface-2); border-radius:var(--radius-s);
+    display:flex; align-items:center; justify-content:center; font-size:12px; color:var(--text-faint);
+    margin-bottom:14px;
+  }
+  .card .tag{
+    display:inline-block; font-size:11px; padding:3px 9px; border-radius:100px; margin-bottom:10px;
+  }
+  .tag.trend{background:var(--gold-dim); color:var(--gold);}
+  .tag.drop{background:var(--green-dim); color:var(--green);}
+  .card .store{font-size:12px; color:var(--text-faint);}
+  .card h4{font-size:14.5px; font-weight:500; margin-top:5px; line-height:1.4; min-height:40px;}
+  .card .price-row{display:flex; align-items:baseline; gap:8px; margin-top:12px;}
+  .card .price{font-family:var(--font-mono); font-weight:600; font-size:18px;}
+  .card .rating{font-size:12.5px; color:var(--text-faint); margin-top:6px;}
+  .card .cta{
+    display:block; text-align:center; margin-top:14px; background:var(--surface-2);
+    border:1px solid var(--line); padding:10px; border-radius:var(--radius-s); font-size:13.5px;
+    font-weight:500; cursor:pointer; transition:background 0.15s ease, border-color 0.15s ease;
+  }
+  .card .cta:hover{background:var(--gold); border-color:var(--gold); color:#1a1400;}
+
+  /* ---------- PRICE RADAR / ALERT ---------- */
+  .alert-panel{
+    display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center;
+    background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-m); padding:44px;
+  }
+  @media(max-width:860px){ .alert-panel{grid-template-columns:1fr; padding:28px;} }
+  .chart{
+    height:140px; display:flex; align-items:flex-end; gap:6px;
+  }
+  .chart .bar{flex:1; background:var(--surface-2); border-radius:3px 3px 0 0; position:relative;}
+  .chart .bar.low{background:var(--green-dim);}
+  .alert-form{display:flex; gap:10px; margin-top:22px;}
+  .alert-form input{
+    flex:1; background:var(--bg); border:1px solid var(--line); color:var(--text);
+    padding:12px 14px; border-radius:var(--radius-s); font-size:14.5px;
+  }
+  .alert-form button{
+    background:var(--green); color:#062615; font-weight:600; border:none;
+    padding:12px 18px; border-radius:var(--radius-s); font-size:14.5px; cursor:pointer;
+  }
+
+  /* ---------- TRUST ---------- */
+  .trust-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:28px;}
+  @media(max-width:760px){ .trust-grid{grid-template-columns:1fr;} }
+  .trust-item h3{font-family:var(--font-head); font-size:18px; font-weight:600;}
+  .trust-item p{margin-top:10px; font-size:14.5px; color:var(--text-muted); line-height:1.6;}
+
+  .disclosure{
+    margin-top:56px; border-top:1px solid var(--line); padding-top:24px;
+    font-size:13px; color:var(--text-faint); line-height:1.7; max-width:760px;
+  }
+
+  /* ---------- FOOTER ---------- */
+  footer{border-top:1px solid var(--line); padding:44px 0; margin-top:20px;}
+  .footer-row{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;}
+  .footer-links{display:flex; gap:26px; font-size:13.5px; color:var(--text-muted);}
+  .footer-links a:hover{color:var(--text);}
+  .copyright{font-size:12.5px; color:var(--text-faint); margin-top:24px;}
+
+  :focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <div class="logo"><span class="logo-dot"></span>ShopFinder AI</div>
+      <div class="nav-links">
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#ofertas">Ofertas de hoje</a>
+        <a href="#radar">Radar de preço</a>
+        <a href="#confianca">Transparência</a>
+      </div>
+      <a href="#ofertas" class="nav-cta">Ver ofertas</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">Curadoria por IA, sem estoque próprio</p>
+      <h1>A gente escaneia todas as lojas. Você só aproveita o melhor preço.</h1>
+      <p class="lede">
+        O ShopFinder AI compara preço, histórico e avaliações entre Amazon, Mercado Livre, Shopee, AliExpress e Magalu — e te leva direto pra oferta que realmente vale a pena.
+      </p>
+      <form class="search-mock" onsubmit="event.preventDefault()">
+        <input type="text" placeholder="Buscar produto, ex: fone bluetooth com boa bateria">
+        <button type="submit">Buscar</button>
+      </form>
+      <div class="hero-stats">
+        <div><p>38.400+</p><p>produtos analisados por dia</p></div>
+        <div><p>5</p><p>lojas parceiras comparadas</p></div>
+        <div><p>24h</p><p>frequência de atualização</p></div>
+      </div>
+    </div>
+
+    <div class="radar-box">
+      <div class="radar-sweep"></div>
+      <div class="radar-ring r1"></div>
+      <div class="radar-ring r2"></div>
+      <div class="radar-ring r3"></div>
+      <div class="radar-node n1"></div>
+      <div class="radar-node n2"></div>
+      <div class="radar-node n3"></div>
+      <div class="radar-node n4"></div>
+      <div class="radar-core">
+        <p class="store">Mercado Livre</p>
+        <p class="name">Fritadeira elétrica sem óleo 4L</p>
+        <div class="price-row">
+          <span class="price">R$ 289</span>
+          <span class="was">R$ 349</span>
+        </div>
+        <span class="badge">Menor preço em 30 dias</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="como-funciona">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Três passos, nenhuma fricção</h2>
+      <p>Você não precisa criar conta pra comparar. O ShopFinder AI já faz o trabalho pesado antes de você chegar.</p>
+    </div>
+    <div class="steps">
+      <div class="step">
+        <p class="num">01</p>
+        <h3>A IA escaneia o mercado</h3>
+        <p>Todo dia, o ShopFinder AI analisa demanda, nota, margem e variação de preço de milhares de produtos nas maiores lojas do país.</p>
+      </div>
+      <div class="step">
+        <p class="num">02</p>
+        <h3>Você vê a explicação, não só o preço</h3>
+        <p>Cada recomendação vem com o motivo: está em queda de preço, tem nota consistente, ou está em alta de vendas essa semana.</p>
+      </div>
+      <div class="step">
+        <p class="num">03</p>
+        <h3>Você compra direto na loja de origem</h3>
+        <p>Ao clicar em "ver oferta", você vai para a loja parceira com o preço já validado. Nenhum produto passa pelo nosso estoque.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="ofertas">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Selecionados pela IA hoje</h2>
+      <p>Ranking recalculado diariamente com base em preço, avaliação e tendência de vendas.</p>
+    </div>
+    <div class="filter-row">
+      <span class="chip active">Escolha da IA</span>
+      <span class="chip">Menor preço</span>
+      <span class="chip">Em alta</span>
+      <span class="chip">Queda de preço</span>
+      <span class="chip">Frete grátis</span>
+    </div>
+    <div class="product-grid">
+
+      <div class="card">
+        <div class="thumb">imagem do produto</div>
+        <span class="tag drop">Queda de preço</span>
+        <p class="store">Amazon</p>
+        <h4>Fone Bluetooth over-ear, 40h de bateria</h4>
+        <div class="price-row"><span class="price">R$ 179</span></div>
+        <p class="rating">4.7 · 12.300 avaliações</p>
+        <div class="cta">Ver oferta</div>
+      </div>
+
+      <div class="card">
+        <div class="thumb">imagem do produto</div>
+        <span class="tag trend">Em alta esta semana</span>
+        <p class="store">Shopee</p>
+        <h4>Mini purificador de ar portátil USB</h4>
+        <div class="price-row"><span class="price">R$ 64</span></div>
+        <p class="rating">4.5 · 3.180 avaliações</p>
+        <div class="cta">Ver oferta</div>
+      </div>
+
+      <div class="card">
+        <div class="thumb">imagem do produto</div>
+        <span class="tag drop">Menor preço em 60 dias</span>
+        <p class="store">Magalu</p>
+        <h4>Air fryer digital 5L, painel touch</h4>
+        <div class="price-row"><span class="price">R$ 312</span></div>
+        <p class="rating">4.8 · 8.940 avaliações</p>
+        <div class="cta">Ver oferta</div>
+      </div>
+
+      <div class="card">
+        <div class="thumb">imagem do produto</div>
+        <span class="tag trend">Escolha da IA</span>
+        <p class="store">Mercado Livre</p>
+        <h4>Cadeira gamer ergonômica, apoio de lombar</h4>
+        <div class="price-row"><span class="price">R$ 689</span></div>
+        <p class="rating">4.6 · 2.050 avaliações</p>
+        <div class="cta">Ver oferta</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="section" id="radar">
+  <div class="wrap">
+    <div class="alert-panel">
+      <div>
+        <p class="eyebrow">Radar de preço</p>
+        <h2 style="font-family:var(--font-head); font-size:26px; font-weight:600;">Segue um produto e a IA avisa quando baixar</h2>
+        <p style="margin-top:12px; color:var(--text-muted); font-size:14.5px; line-height:1.65;">
+          Sem cadastro obrigatório em lugar nenhum do site — só aqui, se você quiser ser avisado de uma queda de preço específica.
+        </p>
+        <form class="alert-form" onsubmit="event.preventDefault()">
+          <input type="email" placeholder="seu@email.com">
+          <button type="submit">Ativar alerta</button>
+        </form>
+      </div>
+      <div>
+        <div class="chart">
+          <div class="bar" style="height:70%"></div>
+          <div class="bar" style="height:82%"></div>
+          <div class="bar" style="height:75%"></div>
+          <div class="bar" style="height:60%"></div>
+          <div class="bar" style="height:64%"></div>
+          <div class="bar low" style="height:38%"></div>
+          <div class="bar low" style="height:34%"></div>
+        </div>
+        <p style="font-size:12.5px; color:var(--text-faint); margin-top:10px; font-family:var(--font-mono);">Histórico de preço · últimos 30 dias</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-alt" id="confianca">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Por que confiar na recomendação</h2>
+    </div>
+    <div class="trust-grid">
+      <div class="trust-item">
+        <h3>A IA explica, não só ordena</h3>
+        <p>Cada badge — "em alta", "menor preço", "escolha da IA" — vem de um critério verificável, não de quem paga mais comissão.</p>
+      </div>
+      <div class="trust-item">
+        <h3>Avaliações agregadas de verdade</h3>
+        <p>Nota e volume de avaliações vêm direto da loja de origem. Não inventamos prova social.</p>
+      </div>
+      <div class="trust-item">
+        <h3>Você decide, sem pressão</h3>
+        <p>Sem contador de urgência falso, sem pop-up de saída. Se o preço não caiu, a gente mostra isso também.</p>
+      </div>
+    </div>
+
+    <p class="disclosure">
+      O ShopFinder AI participa de programas de afiliados da Amazon, Mercado Livre, Shopee, AliExpress e Magalu. Isso significa que, ao comprar através de um link em nosso site, podemos receber uma comissão — sem custo adicional para você. Essa comissão não influencia o ranking ou a recomendação da IA, que é calculada com base em preço, avaliação e tendência de vendas.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-row">
+      <div class="logo"><span class="logo-dot"></span>ShopFinder AI</div>
+      <div class="footer-links">
+        <a href="#como-funciona">Como funciona</a>
+        <a href="#confianca">Transparência</a>
+        <a href="#">Contato</a>
+      </div>
+    </div>
+    <p class="copyright">ShopFinder AI. Plataforma de curadoria de ofertas — não vende nem armazena produtos diretamente.</p>
+  </div>
+</footer>
+
+</body>
+</html>

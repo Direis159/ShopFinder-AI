@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel — ShopFinder AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0F1320; --surface:#171C2E; --surface-2:#212844; --line:#2C3352;
+    --text:#EDEFF7; --text-muted:#98A1C2; --text-faint:#6B7394;
+    --gold:#F0A93A; --gold-dim:#7A5A20; --green:#4ADE80; --green-dim:#1F4A34;
+    --red:#F87171; --red-dim:#4A2323;
+    --radius-s:6px; --radius-m:14px;
+    --font-head:'Space Grotesk', sans-serif; --font-body:'Inter', sans-serif; --font-mono:'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--bg); color:var(--text); font-family:var(--font-body); line-height:1.5; -webkit-font-smoothing:antialiased;}
+  a{color:inherit; text-decoration:none;}
+
+  .shell{display:grid; grid-template-columns:220px 1fr; min-height:100vh;}
+  @media(max-width:860px){ .shell{grid-template-columns:1fr;} }
+
+  /* sidebar */
+  .sidebar{background:var(--surface); border-right:1px solid var(--line); padding:22px 18px; position:sticky; top:0; height:100vh;}
+  @media(max-width:860px){ .sidebar{display:none;} }
+  .logo{font-family:var(--font-head); font-weight:700; font-size:18px; display:flex; align-items:center; gap:8px; padding:0 6px 26px;}
+  .logo-dot{width:9px; height:9px; border-radius:50%; background:var(--gold); box-shadow:0 0 0 4px rgba(240,169,58,0.18);}
+  .side-link{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:var(--radius-s); font-size:14px; color:var(--text-muted); margin-bottom:4px; cursor:pointer;}
+  .side-link.active{background:var(--surface-2); color:var(--text);}
+  .side-link .dot{width:6px; height:6px; border-radius:50%; background:var(--text-faint);}
+  .side-link.active .dot{background:var(--gold);}
+
+  /* main */
+  main{padding:32px 36px 60px;}
+  .top-row{display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:14px; margin-bottom:28px;}
+  h1{font-family:var(--font-head); font-size:26px; font-weight:600;}
+  .top-row p{font-size:13.5px; color:var(--text-faint); margin-top:4px;}
+  .period-select{font-size:13px; color:var(--text-muted); border:1px solid var(--line); padding:8px 14px; border-radius:var(--radius-s); background:var(--surface);}
+
+  /* kpi cards */
+  .kpi-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:32px;}
+  @media(max-width:980px){ .kpi-grid{grid-template-columns:repeat(2,1fr);} }
+  @media(max-width:520px){ .kpi-grid{grid-template-columns:1fr;} }
+  .kpi{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-m); padding:20px;}
+  .kpi p.label{font-size:12.5px; color:var(--text-faint);}
+  .kpi p.value{font-family:var(--font-mono); font-size:26px; font-weight:600; margin-top:8px;}
+  .kpi p.delta{font-size:12.5px; margin-top:6px;}
+  .delta.up{color:var(--green);}
+  .delta.down{color:var(--red);}
+
+  /* panels */
+  .grid-2{display:grid; grid-template-columns:1.4fr 1fr; gap:20px; margin-bottom:20px;}
+  @media(max-width:980px){ .grid-2{grid-template-columns:1fr;} }
+  .panel{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-m); padding:22px;}
+  .panel-head{display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;}
+  .panel-head h2{font-family:var(--font-head); font-size:16px; font-weight:600;}
+  .panel-head span{font-size:12px; color:var(--text-faint);}
+
+  /* clicks chart */
+  .bars{display:flex; align-items:flex-end; gap:8px; height:140px;}
+  .bars .bar{flex:1; background:var(--surface-2); border-radius:4px 4px 0 0; position:relative;}
+  .bars .bar.today{background:var(--gold-dim);}
+  .bars-labels{display:flex; gap:8px; margin-top:8px;}
+  .bars-labels span{flex:1; text-align:center; font-size:11px; color:var(--text-faint); font-family:var(--font-mono);}
+
+  /* store conversion table */
+  .store-row{display:flex; align-items:center; justify-content:space-between; padding:12px 0; border-bottom:1px solid var(--line);}
+  .store-row:last-child{border-bottom:none;}
+  .store-row .name{font-size:14px; font-weight:500;}
+  .store-row .bar-track{flex:1; height:6px; background:var(--surface-2); border-radius:100px; margin:0 14px; overflow:hidden;}
+  .store-row .bar-fill{height:100%; background:var(--gold); border-radius:100px;}
+  .store-row .pct{font-family:var(--font-mono); font-size:13px; color:var(--text-muted); width:44px; text-align:right;}
+
+  /* table */
+  table{width:100%; border-collapse:collapse;}
+  th{text-align:left; font-size:12px; color:var(--text-faint); font-weight:500; padding:0 14px 12px; border-bottom:1px solid var(--line);}
+  td{padding:14px; font-size:13.5px; border-bottom:1px solid var(--line);}
+  tr:last-child td{border-bottom:none;}
+  td.mono{font-family:var(--font-mono);}
+  .prod-cell{display:flex; align-items:center; gap:10px;}
+  .prod-thumb{width:34px; height:34px; background:var(--surface-2); border-radius:6px; flex-shrink:0;}
+  .store-tag{font-size:11px; color:var(--text-faint);}
+  .status{display:inline-flex; align-items:center; gap:6px; font-size:12px;}
+  .status .sdot{width:6px; height:6px; border-radius:50%;}
+  .status.ok .sdot{background:var(--green);}
+  .status.warn .sdot{background:var(--gold);}
+  .status.err .sdot{background:var(--red);}
+
+  /* catalog health */
+  .health-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:14px;}
+  @media(max-width:760px){ .health-grid{grid-template-columns:1fr;} }
+  .health-card{border:1px solid var(--line); border-radius:var(--radius-m); padding:18px;}
+  .health-card p.value{font-family:var(--font-mono); font-size:24px; font-weight:600;}
+  .health-card p.label{font-size:12.5px; color:var(--text-muted); margin-top:4px;}
+  .health-card.warn{border-color:var(--gold-dim); background:rgba(240,169,58,0.05);}
+  .health-card.err{border-color:var(--red-dim); background:rgba(248,113,113,0.05);}
+</style>
+</head>
+<body>
+
+<div class="shell">
+  <aside class="sidebar">
+    <div class="logo"><span class="logo-dot"></span>ShopFinder AI</div>
+    <div class="side-link active"><span class="dot"></span>Visão geral</div>
+    <div class="side-link"><span class="dot"></span>Catálogo</div>
+    <div class="side-link"><span class="dot"></span>Cliques &amp; conversão</div>
+    <div class="side-link"><span class="dot"></span>Comissões</div>
+    <div class="side-link"><span class="dot"></span>Lojas parceiras</div>
+    <div class="side-link"><span class="dot"></span>Configurações</div>
+  </aside>
+
+  <main>
+    <div class="top-row">
+      <div>
+        <h1>Visão geral</h1>
+        <p>Atualizado hoje às 03:12 — próxima importação em 21h</p>
+      </div>
+      <span class="period-select">Últimos 7 dias ▾</span>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi">
+        <p class="label">Cliques em "Ver oferta"</p>
+        <p class="value">18.240</p>
+        <p class="delta up">↑ 12% vs. semana anterior</p>
+      </div>
+      <div class="kpi">
+        <p class="label">Comissão estimada</p>
+        <p class="value">R$ 6.480</p>
+        <p class="delta up">↑ 8% vs. semana anterior</p>
+      </div>
+      <div class="kpi">
+        <p class="label">Taxa de clique → oferta</p>
+        <p class="value">4,2%</p>
+        <p class="delta down">↓ 0,3pp vs. semana anterior</p>
+      </div>
+      <div class="kpi">
+        <p class="label">Produtos ativos no catálogo</p>
+        <p class="value">6.318</p>
+        <p class="delta up">↑ 240 novos hoje</p>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Cliques por dia</h2>
+          <span>Últimos 7 dias</span>
+        </div>
+        <div class="bars">
+          <div class="bar" style="height:58%"></div>
+          <div class="bar" style="height:64%"></div>
+          <div class="bar" style="height:52%"></div>
+          <div class="bar" style="height:70%"></div>
+          <div class="bar" style="height:66%"></div>
+          <div class="bar" style="height:80%"></div>
+          <div class="bar today" style="height:92%"></div>
+        </div>
+        <div class="bars-labels">
+          <span>Qui</span><span>Sex</span><span>Sáb</span><span>Dom</span><span>Seg</span><span>Ter</span><span>Hoje</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head">
+          <h2>Conversão por loja</h2>
+          <span>% dos cliques</span>
+        </div>
+        <div class="store-row"><span class="name">Amazon</span><div class="bar-track"><div class="bar-fill" style="width:34%"></div></div><span class="pct">34%</span></div>
+        <div class="store-row"><span class="name">Mercado Livre</span><div class="bar-track"><div class="bar-fill" style="width:28%"></div></div><span class="pct">28%</span></div>
+        <div class="store-row"><span class="name">Magalu</span><div class="bar-track"><div class="bar-fill" style="width:21%"></div></div><span class="pct">21%</span></div>
+        <div class="store-row"><span class="name">Shopee</span><div class="bar-track"><div class="bar-fill" style="width:12%"></div></div><span class="pct">12%</span></div>
+        <div class="store-row"><span class="name">AliExpress</span><div class="bar-track"><div class="bar-fill" style="width:5%"></div></div><span class="pct">5%</span></div>
+      </div>
+    </div>
+
+    <div class="panel" style="margin-bottom:20px;">
+      <div class="panel-head">
+        <h2>Produtos mais clicados</h2>
+        <span>Últimos 7 dias</span>
+      </div>
+      <table>
+        <thead>
+          <tr><th>Produto</th><th>Loja</th><th>Cliques</th><th>Comissão est.</th><th>Score IA</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><div class="prod-cell"><div class="prod-thumb"></div>Air fryer digital 5L, painel touch</div></td>
+            <td><span class="store-tag">Magalu</span></td>
+            <td class="mono">1.240</td>
+            <td class="mono">R$ 620</td>
+            <td class="mono">0.91</td>
+          </tr>
+          <tr>
+            <td><div class="prod-cell"><div class="prod-thumb"></div>Fone Bluetooth over-ear, 40h de bateria</div></td>
+            <td><span class="store-tag">Amazon</span></td>
+            <td class="mono">980</td>
+            <td class="mono">R$ 410</td>
+            <td class="mono">0.88</td>
+          </tr>
+          <tr>
+            <td><div class="prod-cell"><div class="prod-thumb"></div>Cadeira gamer ergonômica, apoio de lombar</div></td>
+            <td><span class="store-tag">Mercado Livre</span></td>
+            <td class="mono">742</td>
+            <td class="mono">R$ 890</td>
+            <td class="mono">0.84</td>
+          </tr>
+          <tr>
+            <td><div class="prod-cell"><div class="prod-thumb"></div>Mini purificador de ar portátil USB</div></td>
+            <td><span class="store-tag">Shopee</span></td>
+            <td class="mono">601</td>
+            <td class="mono">R$ 96</td>
+            <td class="mono">0.79</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="panel" style="margin-bottom:20px;">
+      <div class="panel-head">
+        <h2>Saúde do catálogo</h2>
+        <span>Verificado na última importação</span>
+      </div>
+      <div class="health-grid">
+        <div class="health-card">
+          <p class="value">6.318</p>
+          <p class="label">produtos ativos</p>
+        </div>
+        <div class="health-card warn">
+          <p class="value">142</p>
+          <p class="label">fora de estoque na loja de origem</p>
+        </div>
+        <div class="health-card err">
+          <p class="value">9</p>
+          <p class="label">links de afiliado com erro de redirecionamento</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2>Status das integrações</h2>
+        <span>Última importação: hoje, 03:12</span>
+      </div>
+      <table>
+        <thead><tr><th>Loja</th><th>Método</th><th>Status</th><th>Produtos importados</th></tr></thead>
+        <tbody>
+          <tr><td>Amazon</td><td>API oficial</td><td><span class="status ok"><span class="sdot"></span>Ok</span></td><td class="mono">2.140</td></tr>
+          <tr><td>Mercado Livre</td><td>API oficial</td><td><span class="status ok"><span class="sdot"></span>Ok</span></td><td class="mono">1.870</td></tr>
+          <tr><td>Magalu</td><td>Feed de afiliados</td><td><span class="status ok"><span class="sdot"></span>Ok</span></td><td class="mono">980</td></tr>
+          <tr><td>Shopee</td><td>API de afiliados</td><td><span class="status warn"><span class="sdot"></span>Atualizado com atraso</span></td><td class="mono">844</td></tr>
+          <tr><td>AliExpress</td><td>API de afiliados</td><td><span class="status ok"><span class="sdot"></span>Ok</span></td><td class="mono">484</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+  </main>
+</div>
+
+</body>
+</html>

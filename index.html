@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ShopFinder AI — Radar de ofertas com curadoria por IA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <div class="logo"><span class="logo-dot"></span>ShopFinder AI</div>
+      <div class="nav-search">
+        <input type="text" id="busca-header" placeholder="Buscar produto..." onkeydown="if(event.key==='Enter') irParaBusca(this)">
+      </div>
+      <div class="nav-links">
+        <a href="categoria.html?cat=cozinha">Cozinha</a>
+        <a href="categoria.html?cat=eletronicos">Eletrônicos</a>
+        <a href="categoria.html?cat=casa">Casa</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <p class="eyebrow">Curadoria por IA, sem estoque próprio</p>
+    <h1>A gente escaneia todas as lojas. Você só aproveita o melhor preço.</h1>
+    <p class="lede">O ShopFinder AI compara preço, histórico e avaliações entre Amazon, Mercado Livre, Shopee, Magalu e TikTok Shop — e te leva direto pra oferta que realmente vale a pena.</p>
+    <form class="search-mock" onsubmit="event.preventDefault(); irParaBusca(document.getElementById('busca-hero'))">
+      <input type="text" id="busca-hero" placeholder="Buscar produto, ex: fone bluetooth">
+      <button type="submit">Buscar</button>
+    </form>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Selecionados pela IA hoje</h2>
+      <p>Ranking calculado a partir de preço, avaliação e tendência de vendas.</p>
+    </div>
+    <div class="product-grid" id="grid-selecionados-ia"></div>
+  </div>
+</section>
+
+<section class="section section-alt">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Mais avaliados</h2>
+      <p>Produtos com maior volume de avaliações no catálogo.</p>
+    </div>
+    <div class="product-grid" id="grid-mais-vendidos"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-row">
+    <div class="logo"><span class="logo-dot"></span>ShopFinder AI</div>
+    <p>Plataforma de curadoria de ofertas — não vende nem armazena produtos diretamente.</p>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+<script>renderHome();</script>
+</body>
+</html>

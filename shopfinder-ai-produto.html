@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Air fryer digital 5L, painel touch — ShopFinder AI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0F1320;
+    --surface:#171C2E;
+    --surface-2:#212844;
+    --line:#2C3352;
+    --text:#EDEFF7;
+    --text-muted:#98A1C2;
+    --text-faint:#6B7394;
+    --gold:#F0A93A;
+    --gold-dim:#7A5A20;
+    --green:#4ADE80;
+    --green-dim:#1F4A34;
+    --red:#F87171;
+    --red-dim:#4A2323;
+    --radius-s:6px;
+    --radius-m:14px;
+    --font-head:'Space Grotesk', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  body{background:var(--bg); color:var(--text); font-family:var(--font-body); line-height:1.5; -webkit-font-smoothing:antialiased;}
+  a{color:inherit; text-decoration:none;}
+  .wrap{max-width:1180px; margin:0 auto; padding:0 28px;}
+
+  header{position:sticky; top:0; z-index:40; background:rgba(15,19,32,0.88); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
+  nav{display:flex; align-items:center; justify-content:space-between; padding:18px 0;}
+  .logo{font-family:var(--font-head); font-weight:700; font-size:20px; letter-spacing:-0.02em; display:flex; align-items:center; gap:8px;}
+  .logo-dot{width:9px; height:9px; border-radius:50%; background:var(--gold); box-shadow:0 0 0 4px rgba(240,169,58,0.18);}
+  .nav-cta{background:var(--gold); color:#1a1400; font-weight:600; font-size:14px; padding:10px 18px; border-radius:var(--radius-s);}
+
+  .breadcrumb{padding:20px 0 0; font-size:13px; color:var(--text-faint);}
+  .breadcrumb a:hover{color:var(--text-muted);}
+
+  .product-layout{display:grid; grid-template-columns:1fr 1fr; gap:56px; padding:32px 0 64px;}
+  @media(max-width:900px){ .product-layout{grid-template-columns:1fr; gap:36px;} }
+
+  /* gallery */
+  .gallery-main{aspect-ratio:1/1; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-m); display:flex; align-items:center; justify-content:center; color:var(--text-faint); font-size:13px;}
+  .gallery-thumbs{display:flex; gap:10px; margin-top:12px;}
+  .gallery-thumbs div{width:64px; height:64px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-s);}
+  .gallery-thumbs div.active{border-color:var(--gold);}
+
+  /* info column */
+  .store-row{display:flex; align-items:center; gap:8px; font-size:13px; color:var(--text-muted);}
+  .store-row .dot{width:5px; height:5px; border-radius:50%; background:var(--text-faint);}
+  h1{font-family:var(--font-head); font-size:28px; font-weight:600; line-height:1.25; margin-top:10px; max-width:480px;}
+
+  .rating-row{display:flex; align-items:center; gap:10px; margin-top:12px; font-size:14px; color:var(--text-muted);}
+  .stars{color:var(--gold); font-family:var(--font-mono); font-size:14px;}
+
+  .price-block{margin-top:24px; padding:20px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-m);}
+  .price-block .was{font-family:var(--font-mono); font-size:14px; color:var(--text-faint); text-decoration:line-through;}
+  .price-block .now{font-family:var(--font-mono); font-size:34px; font-weight:600; color:var(--green); margin-top:2px;}
+  .price-block .save{display:inline-block; margin-top:8px; font-size:12.5px; color:var(--green); background:var(--green-dim); padding:4px 10px; border-radius:100px;}
+  .buy-cta{display:block; text-align:center; margin-top:18px; background:var(--gold); color:#1a1400; font-weight:600; padding:15px; border-radius:var(--radius-s); font-size:15px; cursor:pointer; transition:background 0.15s ease;}
+  .buy-cta:hover{background:#f5b855;}
+  .price-block .note{margin-top:10px; font-size:12px; color:var(--text-faint); text-align:center;}
+
+  /* AI explanation */
+  .ai-box{margin-top:20px; padding:18px 20px; background:var(--surface-2); border:1px solid var(--gold-dim); border-radius:var(--radius-m);}
+  .ai-box .label{font-size:12.5px; color:var(--gold); font-weight:600;}
+  .ai-box p{margin-top:8px; font-size:14px; color:var(--text-muted); line-height:1.6;}
+  .ai-box ul{margin-top:10px; padding-left:0; list-style:none;}
+  .ai-box li{font-size:13.5px; color:var(--text-muted); padding:5px 0; display:flex; gap:8px;}
+  .ai-box li .mark{color:var(--green); font-family:var(--font-mono);}
+
+  /* comparator */
+  .section{padding:44px 0;}
+  .section-title{font-family:var(--font-head); font-size:22px; font-weight:600; margin-bottom:6px;}
+  .section-sub{font-size:14px; color:var(--text-muted); margin-bottom:22px;}
+
+  .compare-table{border:1px solid var(--line); border-radius:var(--radius-m); overflow:hidden;}
+  .compare-row{display:grid; grid-template-columns:1.6fr 1fr 1fr 1fr auto; align-items:center; padding:16px 20px; gap:12px; border-bottom:1px solid var(--line);}
+  .compare-row:last-child{border-bottom:none;}
+  .compare-row.head{background:var(--surface); font-size:12px; color:var(--text-faint);}
+  .compare-row.best{background:rgba(74,222,128,0.06);}
+  @media(max-width:760px){
+    .compare-row{grid-template-columns:1fr; text-align:left; gap:6px;}
+    .compare-row.head{display:none;}
+  }
+  .compare-store{font-size:14.5px; font-weight:500;}
+  .compare-price{font-family:var(--font-mono); font-size:16px; font-weight:600;}
+  .compare-rating{font-size:13.5px; color:var(--text-muted);}
+  .compare-shipping{font-size:13px; color:var(--text-muted);}
+  .compare-btn{background:var(--surface-2); border:1px solid var(--line); padding:8px 14px; border-radius:var(--radius-s); font-size:13px; cursor:pointer; white-space:nowrap;}
+  .compare-btn:hover{background:var(--gold); border-color:var(--gold); color:#1a1400;}
+  .best-tag{font-size:11px; color:var(--green); margin-top:3px;}
+
+  /* price history */
+  .chart{height:120px; display:flex; align-items:flex-end; gap:6px; margin-top:18px;}
+  .chart .bar{flex:1; background:var(--surface-2); border-radius:3px 3px 0 0;}
+  .chart .bar.low{background:var(--green-dim);}
+  .chart-caption{font-size:12px; color:var(--text-faint); margin-top:10px; font-family:var(--font-mono);}
+
+  /* related */
+  .related-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:18px;}
+  @media(max-width:900px){ .related-grid{grid-template-columns:repeat(2,1fr);} }
+  .rcard{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius-m); padding:14px; transition:border-color 0.15s ease;}
+  .rcard:hover{border-color:var(--gold-dim);}
+  .rcard .thumb{aspect-ratio:1/1; background:var(--surface-2); border-radius:var(--radius-s); margin-bottom:10px;}
+  .rcard h4{font-size:13.5px; font-weight:500; line-height:1.4; min-height:36px;}
+  .rcard .price{font-family:var(--font-mono); font-weight:600; font-size:15px; margin-top:8px;}
+  .rcard .store{font-size:11.5px; color:var(--text-faint);}
+
+  .disclosure{margin-top:20px; font-size:12.5px; color:var(--text-faint); line-height:1.7; max-width:760px;}
+
+  footer{border-top:1px solid var(--line); padding:36px 0; margin-top:20px; font-size:12.5px; color:var(--text-faint);}
+  :focus-visible{outline:2px solid var(--gold); outline-offset:2px;}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <nav>
+      <div class="logo"><span class="logo-dot"></span>ShopFinder AI</div>
+      <a href="#" class="nav-cta">Ver ofertas</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+  <p class="breadcrumb"><a href="#">Início</a> / <a href="#">Cozinha</a> / <a href="#">Air fryers</a></p>
+
+  <div class="product-layout">
+    <div>
+      <div class="gallery-main">imagem principal do produto</div>
+      <div class="gallery-thumbs">
+        <div class="active"></div><div></div><div></div><div></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="store-row">Vendido por <strong style="color:var(--text)">Magalu</strong><span class="dot"></span>Entrega em até 5 dias</div>
+      <h1>Air fryer digital 5L, painel touch, 8 funções pré-programadas</h1>
+      <div class="rating-row"><span class="stars">★★★★★</span> 4.8 <span style="color:var(--text-faint)">· 8.940 avaliações</span></div>
+
+      <div class="price-block">
+        <p class="was">R$ 389</p>
+        <p class="now">R$ 312</p>
+        <span class="save">Economia de R$ 77 (20%) — menor preço em 60 dias</span>
+        <div class="buy-cta">Ver oferta no Magalu</div>
+        <p class="note">Você será redirecionado à loja parceira para concluir a compra.</p>
+      </div>
+
+      <div class="ai-box">
+        <p class="label">Por que o ShopFinder AI recomenda</p>
+        <ul>
+          <li><span class="mark">＋</span> Preço 20% abaixo da média das últimas 8 semanas</li>
+          <li><span class="mark">＋</span> Nota consistente (4.8) em quase 9 mil avaliações verificadas</li>
+          <li><span class="mark">＋</span> Volume de vendas em alta nos últimos 7 dias</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="section" style="background:var(--surface);">
+  <div class="wrap">
+    <p class="section-title">Compare entre lojas</p>
+    <p class="section-sub">Mesmo produto, preços diferentes — a IA já ordenou pela melhor combinação de preço e confiabilidade.</p>
+
+    <div class="compare-table">
+      <div class="compare-row head">
+        <span>Loja</span><span>Preço</span><span>Avaliação</span><span>Frete</span><span></span>
+      </div>
+      <div class="compare-row best">
+        <div><span class="compare-store">Magalu</span><p class="best-tag">Melhor combinação preço + confiabilidade</p></div>
+        <span class="compare-price">R$ 312</span>
+        <span class="compare-rating">4.8 (8.940)</span>
+        <span class="compare-shipping">Grátis acima de R$ 99</span>
+        <div class="compare-btn">Ver oferta</div>
+      </div>
+      <div class="compare-row">
+        <span class="compare-store">Amazon</span>
+        <span class="compare-price">R$ 329</span>
+        <span class="compare-rating">4.7 (5.210)</span>
+        <span class="compare-shipping">Grátis com Prime</span>
+        <div class="compare-btn">Ver oferta</div>
+      </div>
+      <div class="compare-row">
+        <span class="compare-store">Mercado Livre</span>
+        <span class="compare-price">R$ 341</span>
+        <span class="compare-rating">4.6 (3.870)</span>
+        <span class="compare-shipping">R$ 19,90</span>
+        <div class="compare-btn">Ver oferta</div>
+      </div>
+      <div class="compare-row">
+        <span class="compare-store">Shopee</span>
+        <span class="compare-price">R$ 298</span>
+        <span class="compare-rating">4.3 (1.240)</span>
+        <span class="compare-shipping">R$ 24,90 · entrega mais lenta</span>
+        <div class="compare-btn">Ver oferta</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="wrap">
+    <p class="section-title">Histórico de preço</p>
+    <p class="section-sub">Últimos 30 dias, loja com melhor preço atual (Magalu)</p>
+    <div class="chart">
+      <div class="bar" style="height:88%"></div>
+      <div class="bar" style="height:92%"></div>
+      <div class="bar" style="height:80%"></div>
+      <div class="bar" style="height:85%"></div>
+      <div class="bar" style="height:70%"></div>
+      <div class="bar" style="height:74%"></div>
+      <div class="bar" style="height:60%"></div>
+      <div class="bar low" style="height:40%"></div>
+      <div class="bar low" style="height:34%"></div>
+      <div class="bar low" style="height:38%"></div>
+    </div>
+    <p class="chart-caption">R$ 389 → R$ 312 · queda de 20%</p>
+  </div>
+</section>
+
+<section class="section" style="background:var(--surface);">
+  <div class="wrap">
+    <p class="section-title">Produtos relacionados</p>
+    <p class="section-sub">Alternativas na mesma categoria, também analisadas pela IA</p>
+    <div class="related-grid">
+      <div class="rcard"><div class="thumb"></div><h4>Air fryer forno 12L, 2 grades</h4><p class="price">R$ 458</p><p class="store">Amazon</p></div>
+      <div class="rcard"><div class="thumb"></div><h4>Fritadeira sem óleo compacta 3.5L</h4><p class="price">R$ 219</p><p class="store">Shopee</p></div>
+      <div class="rcard"><div class="thumb"></div><h4>Air fryer dupla cesta 9L</h4><p class="price">R$ 612</p><p class="store">Mercado Livre</p></div>
+      <div class="rcard"><div class="thumb"></div><h4>Jogo de forminhas de silicone p/ air fryer</h4><p class="price">R$ 34</p><p class="store">Magalu</p></div>
+    </div>
+
+    <p class="disclosure">
+      O ShopFinder AI participa de programas de afiliados das lojas listadas acima. Ao comprar através de um link nesta página, podemos receber uma comissão, sem custo adicional para você — isso não altera o preço nem influencia a ordenação do comparador.
+    </p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>ShopFinder AI. Plataforma de curadoria de ofertas — não vende nem armazena produtos diretamente.</p>
+  </div>
+</footer>
+
+</body>
+</html>
